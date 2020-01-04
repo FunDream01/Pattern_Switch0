@@ -22,8 +22,8 @@ public class MaskManager : MonoBehaviour
         Collider = new BoxCollider2D();
         // add colllider 
         Collider= this.gameObject.AddComponent<BoxCollider2D>();
-        Size = new Vector2(Collider.size.x+(AddToSize/3), Collider.size.y + AddToSize);
-        Collider.size= Size;
+        //Size = new Vector2(Collider.size.x+(AddToSize/3), Collider.size.y + AddToSize);
+        //Collider.size= Size;
         spriteMask = GetComponent<SpriteMask>();
         LayerId = spriteMask.frontSortingLayerID;
         gameManager = FindObjectOfType<GameManager>();

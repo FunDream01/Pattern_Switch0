@@ -989,6 +989,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3916234006029286238, guid: 88ad2b719d2b4a54f9cffbf80a427fb8,
+        type: 3}
+      propertyPath: MasksPieces.Array.size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3916234006029286239, guid: 88ad2b719d2b4a54f9cffbf80a427fb8,
         type: 3}
       propertyPath: m_LocalPosition.x

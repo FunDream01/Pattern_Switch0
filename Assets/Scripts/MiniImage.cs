@@ -12,9 +12,12 @@ public class MiniImage : MonoBehaviour
     public int Reffrenceindex = 0;
     GameObject ChildReffrence;
     MaskManager maskManager;
+    private void Awake()
+    {
+        maskManager = this.gameObject.AddComponent<MaskManager>();
+    }
     private void Start()
     {
-        maskManager= this.gameObject.AddComponent<MaskManager>();
     }
     public void ChangeTexture()
     {
