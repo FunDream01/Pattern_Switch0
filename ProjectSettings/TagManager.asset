@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Texture
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Mini Reference
+  - BackGround
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 491762799
+    locked: 0
+  - name: Green
+    uniqueID: 997118127
+    locked: 0
+  - name: Pink
+    uniqueID: 3974865959
+    locked: 0
+  - name: Orange
+    uniqueID: 4026077813
+    locked: 0
+  - name: Blue
+    uniqueID: 3437258065
+    locked: 0
+  - name: Purple
+    uniqueID: 2439344219
+    locked: 0
+  - name: front
+    uniqueID: 3365089517
+    locked: 0
