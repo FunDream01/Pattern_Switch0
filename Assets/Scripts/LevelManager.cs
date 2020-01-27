@@ -29,12 +29,12 @@ public class LevelManager : MonoBehaviour
     {
         if (AllPatternsRight())
         {
-            Debug.Log("Right");
+            //Debug.Log("Right");
             CompleteLevel();
         }
         else
         {
-            Debug.Log("wrong");
+           // Debug.Log("wrong");
         }
     }
     public void CompleteLevel()

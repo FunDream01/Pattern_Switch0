@@ -11,6 +11,11 @@ public class GameManager : MonoBehaviour
     public MaskManager[] MasksPieces;
     public bool PieceSelected;
 
+    public float animationScale = 81.1f;
+
+    public List<Sprite> patterns;
+
+    
 
     // Start is called before the first frame update
     private void Awake()
@@ -31,12 +36,12 @@ public class GameManager : MonoBehaviour
     {
         if (AllPatternsRight())
         {
-            Debug.Log("Right");
+           // Debug.Log("Right");
             //CompleteLevel();
         }
         else
         {
-            Debug.Log("wrong");
+          //  Debug.Log("wrong");
         }
     }
     bool AllPatternsRight()

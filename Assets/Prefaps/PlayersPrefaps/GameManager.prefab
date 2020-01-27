@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3916234006029286239}
   - component: {fileID: 3916234006029286238}
+  - component: {fileID: 1782186848647508215}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,4 +46,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LayerId: 0
   LayerName: 
+  MasksPieces: []
   PieceSelected: 0
+  animationScale: 1.09
+  patterns:
+  - {fileID: 21300000, guid: 44640811ee69dd74394e93e09b1db3e5, type: 3}
+  - {fileID: 21300000, guid: 0a1b7e21eb76566489153302d09b6ee2, type: 3}
+  - {fileID: 21300000, guid: 1d343d7104f756142ad98413dab293c4, type: 3}
+  - {fileID: 21300000, guid: 5a202aefc33c9ec47b188b0c2a5d0220, type: 3}
+  - {fileID: 21300000, guid: ad3a0638dc5687c44a683e47ce912d17, type: 3}
+--- !u!114 &1782186848647508215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3916234006029286305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f8dc9b11daff669b6675be6d3ebcab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ArrowBase: {fileID: 3525836457737710590, guid: bed0ad88a646f7609a33fe69b590a34a,
+    type: 3}
+  ArrowHead: {fileID: 8423382902899876532, guid: ba94996d25b728e12ad17e09ff89fd58,
+    type: 3}

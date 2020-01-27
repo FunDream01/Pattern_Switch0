@@ -8,6 +8,7 @@ public class DragIndicator : MonoBehaviour
     Vector3 StartPos;
     Vector3 EndPos;
     Camera camera;
+    
     LineRenderer line;
     Vector3 CameraOffset = new Vector3(0, 0, 10);
     [SerializeField]
@@ -30,6 +31,7 @@ public class DragIndicator : MonoBehaviour
             {
                 line = gameObject.AddComponent<LineRenderer>();
             }
+
             if (gameManager.PieceSelected)
             {
                 line.enabled = true;

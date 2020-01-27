@@ -60,6 +60,9 @@ TagManager:
   - name: Purple
     uniqueID: 2439344219
     locked: 0
+  - name: frontfront
+    uniqueID: 3219739163
+    locked: 0
   - name: front
     uniqueID: 3365089517
     locked: 0
