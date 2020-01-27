@@ -60,6 +60,7 @@ public class MaskManager : MonoBehaviour
         {
             if (go == null)
             {
+                Debug.Log("asd");
                 Sprite newsprite;
                 switch (SortingLayer.IDToName(LayerId))
                 {
@@ -179,7 +180,7 @@ public class MaskManager : MonoBehaviour
             if(scaler <= 1.0005f && scaled) {scaler = 1.0f;scaled = true;}
 
             if ((new Vector3(1f,1f,1f) -temp.transform.localScale).magnitude <= 0.01 && scaler <= 1.01f && scaled)
-            { spriteMask.frontSortingLayerID = LayerId; Destroy(temp); tempd = false; if (go != null) Destroy(go); if(go2!=null) Destroy(go2); scaled = false; scaler = 1.0f; }
+            { spriteMask.frontSortingLayerID = LayerId; Destroy(temp); tempd = false; if (go != null) Destroy(go); if(go2!=null) Destroy(go2); scaled = false; scaler = 1.0f; scale=0.0f; }
 
             //  Debug.Log(newerfront);
 
