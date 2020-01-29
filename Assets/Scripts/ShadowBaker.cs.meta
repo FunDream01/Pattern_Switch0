@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 72aa97f8c90783bcdb6a738d77bd92c4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - shadowTexture: {fileID: 2800000, guid: a4d4bcd70f683390883901cf760d283d, type: 3}
+  - originalBackground: {fileID: 2800000, guid: a36b3cc741133cf438ed752bd400425d,
+      type: 3}
+  - backgroundPanel: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

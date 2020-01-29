@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
         if (AllPatternsRight())
         {
            // Debug.Log("Right");
+            
             //CompleteLevel();
         }
         else

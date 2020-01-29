@@ -60,7 +60,6 @@ public class MaskManager : MonoBehaviour
         {
             if (go == null)
             {
-                Debug.Log("asd");
                 Sprite newsprite;
                 switch (SortingLayer.IDToName(LayerId))
                 {
@@ -169,7 +168,6 @@ public class MaskManager : MonoBehaviour
                 temp.transform.localScale = new Vector3(1.0f, scale, 1.0f);
                 temp.transform.localPosition = new Vector3(0,scale-1,0);
                 temp.transform.localScale *= scaler;
-
             }
             /*else if (direction == Direction.DOWN)
             {
@@ -236,6 +234,37 @@ public class MaskManager : MonoBehaviour
 
                 temp.transform.localScale = Vector3.zero;
                 LayerId = gameManager.LayerId;
+            }
+
+            if(tempd)
+            {
+                LayerId = gameManager.LayerId;
+                Sprite newsprite;
+                switch (SortingLayer.IDToName(LayerId))
+                {
+                    case "Green":
+                        newsprite = gameManager.patterns[0];
+                        break;
+                    case "Pink":
+                        newsprite = gameManager.patterns[1];
+                        break;
+                    case "Orange":
+                        newsprite = gameManager.patterns[2];
+                        break;
+                    case "Blue":
+                        newsprite = gameManager.patterns[3];
+                        break;
+                    case "Purple":
+                        newsprite = gameManager.patterns[4];
+                        break;
+                    default:
+                        newsprite = gameManager.patterns[0];
+                        break;
+                }
+                if(go!=null){
+                go.GetComponent<SpriteRenderer>().sprite = newsprite;
+                go2.GetComponent<SpriteRenderer>().sprite = newsprite;
+            }
             }
             /*if(newerfront)*/
             /*else {

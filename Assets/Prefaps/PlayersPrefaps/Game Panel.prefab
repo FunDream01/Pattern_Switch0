@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3164756527854653929}
   - component: {fileID: 3164756527854653718}
+  - component: {fileID: 6221532616269871784}
   m_Layer: 0
   m_Name: Game Panel
   m_TagString: Untagged
@@ -48,6 +49,28 @@ MonoBehaviour:
   - {fileID: 4488627111154810713, guid: ff45ee3fd654ac24baa3bdf17121f75b, type: 3}
   - {fileID: 6410216703039911546, guid: 14b2b1cf244c3714aa2db9f3ef6fd353, type: 3}
   - {fileID: 2098948308039080265, guid: 455519a482efee44f9645cf5ee8ed6c6, type: 3}
+--- !u!114 &6221532616269871784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3164756527854653928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72aa97f8c90783bcdb6a738d77bd92c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowTexture: {fileID: 2800000, guid: 1ed522539c936b83d97a1e7bad465848, type: 3}
+  backgroundPanel: {fileID: 0}
+  shadowColor:
+    serializedVersion: 2
+    rgba: 9013641
+  tiling: 0.21
+  pixelsPerUnit: 256
+  padding: 64
+  shadowScaler: 2
+  shadowOffset: {x: 0.1, y: -0.1}
 --- !u!1 &3164756527944270444
 GameObject:
   m_ObjectHideFlags: 0
