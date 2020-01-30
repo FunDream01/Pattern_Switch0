@@ -313,7 +313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 766562218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.08, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 3, y: 1, z: 1}
   m_Children:
   - {fileID: 703156545}
@@ -984,6 +984,31 @@ PrefabInstance:
     - target: {fileID: 3164756527944270443, guid: 9fc794186d6e84346b5686621c156660,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221532616269871784, guid: 9fc794186d6e84346b5686621c156660,
+        type: 3}
+      propertyPath: backgroundPanel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221532616269871784, guid: 9fc794186d6e84346b5686621c156660,
+        type: 3}
+      propertyPath: tiling
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221532616269871784, guid: 9fc794186d6e84346b5686621c156660,
+        type: 3}
+      propertyPath: padding
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221532616269871784, guid: 9fc794186d6e84346b5686621c156660,
+        type: 3}
+      propertyPath: pixelsPerUnit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6221532616269871784, guid: 9fc794186d6e84346b5686621c156660,
+        type: 3}
+      propertyPath: shadowScaler
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

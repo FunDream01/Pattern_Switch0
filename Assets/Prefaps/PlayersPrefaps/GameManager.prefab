@@ -49,6 +49,9 @@ MonoBehaviour:
   MasksPieces: []
   PieceSelected: 0
   animationScale: 1.09
+  complete: {fileID: 2131318391326663380, guid: c28b069c216734930b77a3bdb07600c1,
+    type: 3}
+  next: {fileID: 8341835741351646195, guid: 0789c374075b85ec99bae7ed7663f61e, type: 3}
   patterns:
   - {fileID: 21300000, guid: 44640811ee69dd74394e93e09b1db3e5, type: 3}
   - {fileID: 21300000, guid: 0a1b7e21eb76566489153302d09b6ee2, type: 3}
@@ -71,3 +74,4 @@ MonoBehaviour:
     type: 3}
   ArrowHead: {fileID: 8423382902899876532, guid: ba94996d25b728e12ad17e09ff89fd58,
     type: 3}
+  camera: {fileID: 5093306825211540043, guid: d01c58e38ceaca04cb422f02615403f5, type: 3}

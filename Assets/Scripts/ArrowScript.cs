@@ -13,14 +13,14 @@ public class ArrowScript : MonoBehaviour
     GameObject g,gs,a;
 
     GameManager gameManager;
-    Camera camera;
+     Camera camera;
 
     float origyscale;
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        camera = Camera.main;
 
+camera=Camera.main;
     }
 
     // Update is called once per frame

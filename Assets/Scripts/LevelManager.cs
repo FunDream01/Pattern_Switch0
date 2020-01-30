@@ -59,7 +59,7 @@ public class LevelManager : MonoBehaviour
     }
     public void NextScene()
     {
-        if (level_index == 6)
+        if (level_index == 21)
         {
             SceneManager.LoadScene(0);
             PlayerPrefs.SetInt("Last_Level", 1);

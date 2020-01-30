@@ -13,8 +13,14 @@ public class GameManager : MonoBehaviour
 
     public float animationScale = 81.1f;
 
+    public GameObject complete;
+    public GameObject next;
+
+    GameObject c;
+
     public List<Sprite> patterns;
 
+    float vel = 2f;
     
 
     // Start is called before the first frame update
@@ -31,12 +37,38 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    if(c!=null){
+    float n = Mathf.SmoothDamp(c.transform.position.y, 5,  ref vel , 2.0f);
+    c.transform.position = new Vector3(c.transform.position.x, n, c.transform.position.z);
     }
+
+
+
+
+    }
+
+    IEnumerator blur()
+    {
+
+        yield return new  WaitForSeconds(0.05f);
+        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().iterations = 2;
+        yield return new  WaitForSeconds(0.05f);
+        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().iterations = 3;
+    }
+
     public void CheckWin()
     {
         if (AllPatternsRight())
         {
-           // Debug.Log("Right");
+            Debug.Log("Right");
+
+            //c = Instantiate(complete,new Vector3(0,13,50),Quaternion.identity);
+            Camera.main.GetComponent<SuperBlur.SuperBlurFast>().enabled = true;
+            StartCoroutine(blur());
+            LevelCanvesManager lm = FindObjectOfType<LevelCanvesManager>();
+            lm.Won();
+            
             
             //CompleteLevel();
         }
@@ -56,6 +88,11 @@ public class GameManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void PlayButton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
 

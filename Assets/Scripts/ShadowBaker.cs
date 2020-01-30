@@ -21,9 +21,15 @@ public class ShadowBaker : MonoBehaviour
     public int pixelsPerUnit;
     public int padding;
     public float shadowScaler; 
+[HideInInspector]
 
 
 
+    public float width;
+
+
+
+    public GameObject origin;
 
     public Vector2 shadowOffset;
 
@@ -53,12 +59,16 @@ public class ShadowBaker : MonoBehaviour
 
         }
 
+        if(width > 0f) ww = width;
+        if(origin !=null ) masks[lowest] = origin.transform;
 
         int w=(int) (ww*(float)ppu*2.0f);
         int h = (int) ((((hh+masks[highest].localScale.y)-ll+masks[lowest].localScale.y))*(float)ppu);
 
+
         w+=padding*2;
         h+=padding*2;
+
 
 
         Texture2D tex = new Texture2D(w,h);
