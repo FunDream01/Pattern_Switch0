@@ -47,7 +47,7 @@ public class LevelCanvesManager : MonoBehaviour
     var x =transform.GetChild(3);
     x.GetComponent<AspectRatioFitter>().enabled=true;
     Destroy(x.GetComponent<AspectRatioFitter>());
-    x.transform.position += new Vector3(0,400,0);
+    x.transform.position += new Vector3(0,600,0);
 
     }
     
@@ -82,7 +82,7 @@ public class LevelCanvesManager : MonoBehaviour
             c.position = new Vector3(m,c.position.y,c.position.z);
 
             var i = transform.GetChild(3);
-            float v = Mathf.SmoothDamp(i.position.y, i.GetComponent<RectTransform>().rect.height*1.1f,  ref vel3 , 0.6f);
+            float v = Mathf.SmoothDamp(i.position.y, i.GetComponent<RectTransform>().rect.height*2.7f,  ref vel3 , 0.6f);
             i.position = new Vector3(i.position.x,v,i.position.z);
 
 
