@@ -13,6 +13,7 @@ public class ArrowScript : MonoBehaviour
     GameObject g,gs,a;
 
     GameManager gameManager;
+    
      Camera camera;
 
     float origyscale;
@@ -26,10 +27,27 @@ camera=Camera.main;
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+       
+        bool inside = false;
+        if (Input.GetMouseButton(0))
+        {
+            EndPos= camera.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
+            
+            foreach(Rect rect in gameManager.g_pieces)
+            {
+                if(rect.Contains(EndPos)){
+                    inside=true;
+                }
+            }
+           
+        }
+         //Debug.Log(r.x + " " + EndPos.x + "; " + r.xMax);
+         //Debug.Log(inside + EndPos.ToString() + r);
+
+         if (Input.GetMouseButtonDown(0))
         {
 
-            if (gameManager.PieceSelected)
+            if (gameManager.PieceSelected && inside)
             {
                 StartPos = camera.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
                 g = Instantiate(ArrowBase,StartPos,Quaternion.identity);
@@ -48,18 +66,18 @@ camera=Camera.main;
             }
 
         }
-        if (Input.GetMouseButton(0))
-        {
-            EndPos= camera.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
 
-        }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) || inside == false)
         {
             Destroy(g);
             Destroy(gs);
             Destroy(a);
+            gameManager.PieceSelected = false;
+            gameManager.LayerId = 0;
             //line.enabled = false;
         }
+
+        
 
         Vector3 diff = EndPos - StartPos;
         if(g!=null && a!=null && gs !=null)

@@ -63,6 +63,21 @@ TagManager:
   - name: frontfront
     uniqueID: 3219739163
     locked: 0
+  - name: green_front
+    uniqueID: 2824245661
+    locked: 0
+  - name: pink_front
+    uniqueID: 1917673067
+    locked: 0
+  - name: orange_front
+    uniqueID: 3038856185
+    locked: 0
+  - name: blue_front
+    uniqueID: 1585726763
+    locked: 0
+  - name: purple_front
+    uniqueID: 2618930239
+    locked: 0
   - name: front
     uniqueID: 3365089517
     locked: 0
