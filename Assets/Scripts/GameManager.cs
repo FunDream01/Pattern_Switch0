@@ -22,12 +22,12 @@ public class GameManager : MonoBehaviour
     public List<Sprite> patterns;
 
     [HideInInspector]
-    public List<Rect> g_pieces;
+    public List<Bounds> g_pieces;
 
     float vel = 2f;
     
 
-    float gridPadding = 0.1f;
+    public float gridPadding = 0.1f;
 
     // Start is called before the first frame update
     private void Awake()
@@ -41,17 +41,9 @@ public class GameManager : MonoBehaviour
         MasksPieces = FindObjectsOfType<MaskManager>();
         foreach (MaskManager MasksPiece in MasksPieces)
         {
-            var p = MasksPiece.transform.position;
-            var s = MasksPiece.transform.lossyScale;
-
-            Rect rect = new Rect(p.x-s.x,p.y-s.y,s.x*2,s.y*2);
-            rect.xMin -= gridPadding;
-            rect.xMax += gridPadding;
-            rect.yMin -= gridPadding;
-            rect.yMax += gridPadding;
-            g_pieces.Add(rect);
-            
-
+            Bounds b = MasksPiece.GetComponent<SpriteMask>().bounds;
+            b.extents += new Vector3(gridPadding,gridPadding,0);
+            g_pieces.Add(b);
         }
     }
     // Update is called once per frame

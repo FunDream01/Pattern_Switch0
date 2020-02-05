@@ -21,7 +21,7 @@ public class ArrowScript : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
 
-camera=Camera.main;
+        camera=Camera.main;
     }
 
     // Update is called once per frame
@@ -33,16 +33,14 @@ camera=Camera.main;
         {
             EndPos= camera.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
             
-            foreach(Rect rect in gameManager.g_pieces)
+            foreach(Bounds b in gameManager.g_pieces)
             {
-                if(rect.Contains(EndPos)){
+                if(b.Contains(EndPos)){
                     inside=true;
                 }
             }
            
         }
-         //Debug.Log(r.x + " " + EndPos.x + "; " + r.xMax);
-         //Debug.Log(inside + EndPos.ToString() + r);
 
          if (Input.GetMouseButtonDown(0))
         {
@@ -54,15 +52,6 @@ camera=Camera.main;
                 origyscale = g.transform.localScale.y;
                 a = Instantiate(ArrowHead,StartPos,Quaternion.identity);
                 gs = Instantiate(ArrowHead,StartPos,Quaternion.identity);
-
-              //  g.transform.GetChild(0).GetComponent<SpriteMask>().frontSortingLayerID = gameManager.LayerId;
-             /*   gs = new GameObject("shadow");
-                gs.transform.parent = g.transform;
-                SpriteMask sr = gs.AddComponent<SpriteMask>();
-                sr.sortingOrder = g.transform.GetChild(0).GetComponent<SpriteMask>().sortingOrder -1;
-                sr.sprite = ss;
-                sr.transform.localScale = new Vector3(5,5,5);
-            */
             }
 
         }
@@ -74,7 +63,6 @@ camera=Camera.main;
             Destroy(a);
             gameManager.PieceSelected = false;
             gameManager.LayerId = 0;
-            //line.enabled = false;
         }
 
         
@@ -82,16 +70,12 @@ camera=Camera.main;
         Vector3 diff = EndPos - StartPos;
         if(g!=null && a!=null && gs !=null)
         {
-
-            //Transform gm = g.transform.GetChild(0);
-            //gm.localScale = new Vector3(diff.magnitude,gm.transform.localScale.y,gm.transform.localScale.z);
             float yscale = origyscale;
             if(StartPos.x > EndPos.x) yscale *=-1; 
             g.transform.localScale = new Vector3(diff.magnitude,yscale,g.transform.localScale.z);
             float angle = Vector2.Angle(new Vector2(1,0),diff);
             a.transform.position = EndPos;
             if(EndPos.y > StartPos.y) angle = -angle;
-         //  a.transform.rotation = Quaternion.Euler(a.transform.rotation.eulerAngles.x,a.transform.rotation.eulerAngles.y,-angle);
             g.transform.rotation = Quaternion.Euler(g.transform.rotation.eulerAngles.x,g.transform.rotation.eulerAngles.y,-angle);
         
         }

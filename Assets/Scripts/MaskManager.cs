@@ -9,7 +9,6 @@ public class MaskManager : MonoBehaviour
     GameManager gameManager;
 
     bool tempd = false, scaled = false;
-    bool newerfront = false;
     public int FinalLayerId;
     BoxCollider2D Collider;
     GameObject ChildReffrence;
@@ -30,7 +29,7 @@ public class MaskManager : MonoBehaviour
     enum Direction { LEFT, RIGHT, UP, DOWN }
     Direction direction;
 
-    GameObject go,go2;
+    GameObject go, go2;
     Camera camera;
 
     // Start is called before the first frame update
@@ -53,6 +52,61 @@ public class MaskManager : MonoBehaviour
         max_scale = gameManager.animationScale;
     }
     // Update is called once per frame
+
+
+    struct Layer_Selection
+    {
+        public string go_layer;
+        public string back_layer;
+        public Sprite newsprite;
+
+    }
+
+
+    Layer_Selection SelectLayer(int id)
+    {
+        Layer_Selection l = new Layer_Selection();
+        switch (SortingLayer.IDToName(id))
+        {
+            case "Green":
+                l.newsprite = gameManager.patterns[0];
+                l.go_layer = "green_front";
+                l.back_layer = "Default";
+                break;
+            case "Pink":
+                l.newsprite = gameManager.patterns[1];
+                l.go_layer = "pink_front";
+                l.back_layer = "green_front";
+
+                break;
+            case "Orange":
+                l.newsprite = gameManager.patterns[2];
+                l.back_layer = "pink_front";
+                l.go_layer = "orange_front";
+
+                break;
+            case "Blue":
+                l.newsprite = gameManager.patterns[3];
+                l.back_layer = "orange_front";
+                l.go_layer = "blue_front";
+
+                break;
+            case "Purple":
+                l.newsprite = gameManager.patterns[4];
+                l.back_layer = "blue_front";
+                l.go_layer = "purple_front";
+
+                break;
+            default:
+                l.newsprite = gameManager.patterns[0];
+                l.back_layer = "Default";
+                l.go_layer = "green_front";
+
+                break;
+        }
+        return l;
+    }
+
     void Update()
     {
 
@@ -61,60 +115,21 @@ public class MaskManager : MonoBehaviour
             if (go == null)
             {
 
-                string go_layer = "";
-                string back_layer = "";
-                Sprite newsprite;
-                switch (SortingLayer.IDToName(LayerId))
-                {
-                    case "Green":
-                        newsprite = gameManager.patterns[0];
-                        go_layer = "green_front";
-                        back_layer = "Default";
-                        break;
-                    case "Pink":
-                        newsprite = gameManager.patterns[1];
-                        go_layer = "pink_front";
-                        back_layer = "green_front";
+                var l = SelectLayer(LayerId);
 
-                        break;
-                    case "Orange":
-                        newsprite = gameManager.patterns[2];
-                        back_layer = "pink_front";
-                        go_layer = "orange_front";
-
-                        break;
-                    case "Blue":
-                        newsprite = gameManager.patterns[3];
-                        back_layer = "orange_front";
-                        go_layer = "blue_front";
-
-                        break;
-                    case "Purple":
-                        newsprite = gameManager.patterns[4];
-                        back_layer = "blue_front";
-                        go_layer = "purple_front";
-
-                        break;
-                    default:
-                        newsprite = gameManager.patterns[0];
-                        back_layer = "Default";
-                        go_layer = "green_front";
-
-                        break;
-                }
 
                 go = new GameObject();
                 go.transform.localScale = new Vector3(0.6f, 0.6f, 1);
                 go.transform.position = new Vector3(-1, 1, 0);
                 SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-                sr.sprite = newsprite;
+                sr.sprite = l.newsprite;
                 sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-                sr.sortingLayerID = SortingLayer.NameToID(go_layer);
+                sr.sortingLayerID = SortingLayer.NameToID(l.go_layer);
                 go.SetActive(true);
                 go2 = Instantiate(go);
                 go2.transform.position = new Vector3(5.14f, 1f, 0);
                 temp.GetComponent<SpriteMask>().frontSortingLayerID = sr.sortingLayerID;
-                temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(back_layer);
+                temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(l.back_layer);
             }
 
             if (max_scale <= 1.005f) { scaler = 1.0f; scaled = true; }
@@ -151,8 +166,8 @@ public class MaskManager : MonoBehaviour
                 }
 
                 scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
-                temp.transform.localScale = new Vector3(scale, 1.0f,1.0f);
-                temp.transform.localPosition = new Vector3((1-scale)*fix,0,0);
+                temp.transform.localScale = new Vector3(scale, 1.0f, 1.0f);
+                temp.transform.localPosition = new Vector3((1 - scale) * fix, 0, 0);
                 temp.transform.localScale *= scaler;
             }
             else if (direction == Direction.UP)
@@ -169,8 +184,8 @@ public class MaskManager : MonoBehaviour
 
                 scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
                 temp.transform.localScale = new Vector3(1.0f, scale, 1.0f);
-                temp.transform.localPosition = new Vector3(0,-scale+1,0);
-               temp.transform.localScale *= scaler;
+                temp.transform.localPosition = new Vector3(0, -scale + 1, 0);
+                temp.transform.localScale *= scaler;
 
             }
             else if (direction == Direction.DOWN)
@@ -187,7 +202,7 @@ public class MaskManager : MonoBehaviour
 
                 scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
                 temp.transform.localScale = new Vector3(1.0f, scale, 1.0f);
-                temp.transform.localPosition = new Vector3(0,scale-1,0);
+                temp.transform.localPosition = new Vector3(0, scale - 1, 0);
                 temp.transform.localScale *= scaler;
             }
             /*else if (direction == Direction.DOWN)
@@ -196,12 +211,11 @@ public class MaskManager : MonoBehaviour
                 temp.transform.localScale = new Vector3(transform.localScale.x,scale, transform.localScale.z);
                 temp.transform.position = (transform.position) + new Vector3(0,-(transform.localScale.y - scale), 0);
             }*/
-            if(scaler <= 1.0005f && scaled) {scaler = 1.0f;scaled = true;}
+            if (scaler <= 1.0005f && scaled) { scaler = 1.0f; scaled = true; }
 
-            if ((new Vector3(1f,1f,1f) -temp.transform.localScale).magnitude <= 0.01 && scaler <= 1.01f && scaled)
-            { spriteMask.frontSortingLayerID = LayerId; Destroy(temp); tempd = false; if (go != null) Destroy(go); if(go2!=null) Destroy(go2); scaled = false; scaler = 1.0f; scale=0.0f; }
+            if ((new Vector3(1f, 1f, 1f) - temp.transform.localScale).magnitude <= 0.01 && scaler <= 1.01f && scaled)
+            { spriteMask.frontSortingLayerID = LayerId; Destroy(temp); tempd = false; if (go != null) Destroy(go); if (go2 != null) Destroy(go2); scaled = false; scaler = 1.0f; scale = 0.0f; }
 
-            //  Debug.Log(newerfront);
 
         }
 
@@ -220,17 +234,18 @@ public class MaskManager : MonoBehaviour
         {
             if (!tempd)
             {
-                temp = new GameObject("temp");
+                temp = new GameObject("Animation Object");
                 temp.transform.parent = transform.parent;
                 temp.transform.position = Vector3.zero;
-                temp.transform.SetParent(transform,false);
+                temp.transform.SetParent(transform, false);
+
                 var s = temp.AddComponent<SpriteMask>();
                 s.isCustomRangeActive = true;
                 s.sprite = spriteMask.sprite;
-                if(s.sprite.name=="32x128")fix=2.0f; else fix=1.0f;
+                if (s.sprite.name == "32x128") fix = 2.0f; else fix = 1.0f;
                 s.alphaCutoff = 0.2f;
                 tempd = true;
-                if (SortingLayer.GetLayerValueFromID(gameManager.LayerId) > SortingLayer.GetLayerValueFromID(spriteMask.frontSortingLayerID)) newerfront = true; else newerfront = false;
+                
                 Vector3 diff = ((camera.ScreenToWorldPoint(Input.mousePosition) - transform.position));
                 diff.x += transform.localScale.x;
                 diff.y -= transform.localScale.y;
@@ -240,7 +255,6 @@ public class MaskManager : MonoBehaviour
                 diffs[1] = transform.localScale.x * 2 - diff.x; //RIGHT
                 diffs[2] = diff.y; //UP
                 diffs[3] = transform.localScale.y * 2 - diff.y; //DOWN
-
                 float smallest = diffs[0];
                 int smallest_i = 0;
                 for (int i = 1; i < 4; i++)
@@ -248,79 +262,32 @@ public class MaskManager : MonoBehaviour
                     if (diffs[i] < smallest)
                     { smallest = diffs[i]; smallest_i = i; }
                 }
-
                 direction = (Direction)smallest_i;
 
                 temp.transform.localScale = Vector3.zero;
                 LayerId = gameManager.LayerId;
             }
 
-            if(tempd)
+            if (tempd)
             {
                 LayerId = gameManager.LayerId;
-                Sprite newsprite;
-                string go_layer="",back_layer="";
-                switch (SortingLayer.IDToName(LayerId))
-                {
-                    case "Green":
-                        newsprite = gameManager.patterns[0];
-                        go_layer = "green_front";
-                        back_layer = "Default";
-                        break;
-                    case "Pink":
-                        newsprite = gameManager.patterns[1];
-                        go_layer = "pink_front";
-                        back_layer = "green_front";
-
-                        break;
-                    case "Orange":
-                        newsprite = gameManager.patterns[2];
-                        back_layer = "pink_front";
-                        go_layer = "orange_front";
-
-                        break;
-                    case "Blue":
-                        newsprite = gameManager.patterns[3];
-                        back_layer = "orange_front";
-                        go_layer = "blue_front";
-
-                        break;
-                    case "Purple":
-                        newsprite = gameManager.patterns[4];
-                        back_layer = "blue_front";
-                        go_layer = "purple_front";
-
-                        break;
-                    default:
-                        newsprite = gameManager.patterns[0];
-                        back_layer = "Default";
-                        go_layer = "green_front";
-
-                        break;
-                }
-                 temp.GetComponent<SpriteMask>().frontSortingLayerID = SortingLayer.NameToID(go_layer);
-                temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(back_layer);
+                var l = SelectLayer(LayerId);
+                temp.GetComponent<SpriteMask>().frontSortingLayerID = SortingLayer.NameToID(l.go_layer);
+                temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(l.back_layer);
 
                 if (go != null)
                 {
                     var s1 = go.GetComponent<SpriteRenderer>();
-                    s1.sprite = newsprite;
-                    s1.sortingLayerID=SortingLayer.NameToID(go_layer);
-                
+                    s1.sprite = l.newsprite;
+                    s1.sortingLayerID = SortingLayer.NameToID(l.go_layer);
+
                     var s2 = go2.GetComponent<SpriteRenderer>();
-                    s2.sprite = newsprite;
-                    s2.sortingLayerID=SortingLayer.NameToID(go_layer);
+                    s2.sprite = l.newsprite;
+                    s2.sortingLayerID = SortingLayer.NameToID(l.go_layer);
                 }
 
-                
+
             }
-            /*if(newerfront)*/
-            /*else {
-                temp.GetComponent<SpriteMask>().frontSortingLayerID = spriteMask.frontSortingLayerID;
-                temp.transform.localScale = transform.localScale;
-                spriteMask.frontSortingLayerID = LayerId;
-                }
-*/
 
         }
 
