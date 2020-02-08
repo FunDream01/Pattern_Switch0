@@ -11,7 +11,8 @@ public class MaskManager : MonoBehaviour
     bool tempd = false, scaled = false;
     public int FinalLayerId;
     BoxCollider2D Collider;
-    GameObject ChildReffrence;
+    [HideInInspector]
+    public GameObject ChildReffrence;
     public float AddToSize = 0.0f;
     GameObject temp;
     public Vector2 Size;
@@ -42,10 +43,7 @@ public class MaskManager : MonoBehaviour
             ChildReffrence = gameObject.transform.GetChild(0).gameObject;
         }
         Collider = new BoxCollider2D();
-        // add colllider 
         Collider = this.gameObject.AddComponent<BoxCollider2D>();
-        //Size = new Vector2(Collider.size.x+(AddToSize/3), Collider.size.y + AddToSize);
-        //Collider.size= Size;
         spriteMask = GetComponent<SpriteMask>();
         LayerId = spriteMask.frontSortingLayerID;
         gameManager = FindObjectOfType<GameManager>();
@@ -303,15 +301,10 @@ public class MaskManager : MonoBehaviour
     }
     public bool IsPatternRight()
     {
-
-
         if (this.LayerId == ChildReffrence.GetComponent<SpriteMask>().frontSortingLayerID)
         {
             return true;
         }
-        else
-        {
             return false;
-        }
     }
 }

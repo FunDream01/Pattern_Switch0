@@ -56,7 +56,7 @@ public class ArrowScript : MonoBehaviour
 
         }
 
-        if (Input.GetMouseButtonUp(0) || inside == false)
+        if (Input.GetMouseButtonUp(0) || !inside)
         {
             Destroy(g);
             Destroy(gs);

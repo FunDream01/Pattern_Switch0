@@ -55,7 +55,7 @@ public class ShadowBaker : MonoBehaviour
 
         for (int m = 0; m < masks.Length; m++)
         {
-            int k_max = (int)((masks[m].lossyScale.x * (float)pixelsPerUnit * 2f) / (float)i_max);
+            int k_max = (int)((masks[m].GetComponent<SpriteMask>().bounds.size.x * (float)pixelsPerUnit ) / (float)i_max);
             int k_max2 = (int)((float)k_max * tiling);
 
             for (int k = 0; k < ((float)k_max / tiling) + 1; k++)
@@ -68,11 +68,11 @@ public class ShadowBaker : MonoBehaviour
                     {
                         //BOTTOM
                         float x1, y1;
-                        x1 = masks[m].position.x - masks[m].lossyScale.x;
-                        y1 = masks[m].position.y - masks[m].lossyScale.y;
+                        x1 = masks[m].GetComponent<SpriteMask>().bounds.min.x;
+                        y1 = masks[m].GetComponent<SpriteMask>().bounds.min.y;
                         int x2 = (int)((x1 - x) * pixelsPerUnit) + 0 + padding;
                         int y2 = (int)((y1 - y) * pixelsPerUnit) + j + padding;
-                        int x3 = (int)((x1 - x + masks[m].lossyScale.x * 2f) * (float)pixelsPerUnit) + padding;
+                        int x3 = (int)((masks[m].GetComponent<SpriteMask>().bounds.max.x - x) * (float)pixelsPerUnit) + padding;
                         x3 -= (int)((float)k * (float)i_max * tiling);
                         x3 -= i;
                         if (x3 < x2) continue;
@@ -83,7 +83,7 @@ public class ShadowBaker : MonoBehaviour
                             tex.SetPixel(x3, y2, LayerPixels(a, b));
 
                             //TOP
-                            y1 = masks[m].position.y + masks[m].lossyScale.y;
+                            y1 = masks[m].GetComponent<SpriteMask>().bounds.max.y;
                             y2 = (int)((y1 - y) * pixelsPerUnit) - j + padding;
                             a = tex.GetPixel(x3, y2);
                             b = shadowTexture.GetPixel((int)((float)i * (float)shadowScaler), (int)((float)j * (float)shadowScaler));
@@ -98,7 +98,7 @@ public class ShadowBaker : MonoBehaviour
 
 
             int kk_max;
-            kk_max = (int)((masks[m].lossyScale.y * (float)pixelsPerUnit * 2f) / (float)i_max);
+            kk_max = (int)((masks[m].GetComponent<SpriteMask>().bounds.size.y * (float)pixelsPerUnit) / (float)i_max);
             int kk_max2 = (int)((float)kk_max * tiling);
 
 
@@ -113,12 +113,12 @@ public class ShadowBaker : MonoBehaviour
                     {
                         //LEFT
                         float x1, y1;
-                        x1 = masks[m].position.x - masks[m].lossyScale.x;
-                        y1 = masks[m].position.y - masks[m].lossyScale.y;
+                        x1 = masks[m].GetComponent<SpriteMask>().bounds.min.x;
+                        y1 = masks[m].GetComponent<SpriteMask>().bounds.min.y;
                         int x2 = (int)((x1 - x) * pixelsPerUnit) + j + padding;
                         int y2 = (int)((y1 - y) * pixelsPerUnit) + i + padding; ;
                         y2 += (int)((float)k * (float)i_max * tiling);
-                        int y3 = (int)((y1 - y + masks[m].lossyScale.y * 2f) * (float)pixelsPerUnit) + padding;
+                        int y3 = (int)((masks[m].GetComponent<SpriteMask>().bounds.max.y - y) * (float)pixelsPerUnit) + padding;
                         if (y2 > y3) continue;
                         else
                         {
@@ -129,11 +129,10 @@ public class ShadowBaker : MonoBehaviour
 
 
                             //RIGHT
-                            x1 = masks[m].position.x + masks[m].lossyScale.x;
-                            y1 = masks[m].position.y - masks[m].lossyScale.y;
+                            x1 = masks[m].GetComponent<SpriteMask>().bounds.max.x;
+                            y1 = masks[m].GetComponent<SpriteMask>().bounds.min.y;
                             x2 = (int)((x1 - x) * pixelsPerUnit) - i + padding;
                             y2 = (int)((y1 - y) * pixelsPerUnit) + j + padding;
-
 
                             y2 += (int)((float)k * (float)i_max * tiling);
 
