@@ -76,17 +76,15 @@ public class GameManager : MonoBehaviour
     {
         if (AllPatternsRight())
         {
-            Debug.Log("s");
             StartCoroutine(blur());
             LevelCanvesManager lm = FindObjectOfType<LevelCanvesManager>();
             lm.Won();
         }
         if(lostColor() != "")
         {
-            Debug.Log(lostColor());
             StartCoroutine(blur());
             LevelCanvesManager lm = FindObjectOfType<LevelCanvesManager>();
-            lm.Lost();
+            lm.Lost(lostColor());
 
         }
 
