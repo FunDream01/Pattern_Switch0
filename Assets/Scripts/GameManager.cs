@@ -72,6 +72,9 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<SuperBlur.SuperBlurFast>().iterations = 3;
     }
 
+
+    
+
     public void CheckWin()
     {
         if (AllPatternsRight())
