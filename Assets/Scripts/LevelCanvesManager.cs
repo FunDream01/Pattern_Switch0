@@ -74,30 +74,24 @@ public class LevelCanvesManager : MonoBehaviour
     void Update()
     {
     
+        string button_string = "";
+
         if(won)
         {
-
-         for(int i = 0; i < transform.childCount; i++)
-        {
-
-            transform.GetChild(i).TryGetComponent<Animator>( out Animator t);
-            if( t != null ) t.enabled = true; 
-            if(t.gameObject.tag == "Replay") t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Next";
-            
-        }
+            button_string = "Next";
         }
 
         if(lost)
         {
-
-        for(int i = 0; i < transform.childCount; i++)
+            button_string = "Replay";
+            
+        }
+        if(won || lost) for(int i = 0; i < transform.childCount; i++)
         {
 
             transform.GetChild(i).TryGetComponent<Animator>( out Animator t);
             if( t != null ) t.enabled = true; 
-            if (t.gameObject.tag == "Replay") t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Replay";
-            
-        }
+            if(t.gameObject.tag == "Replay") t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = button_string;
             
         }
 
