@@ -8,6 +8,8 @@ public class FacebookController : MonoBehaviour
 
 
 
+     void Start()
+    {DontDestroyOnLoad(this.gameObject);}
 
 
     public void LogLevelStart(int level)
