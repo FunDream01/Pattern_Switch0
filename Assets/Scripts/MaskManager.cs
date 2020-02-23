@@ -5,17 +5,16 @@ using UnityEngine;
 public class MaskManager : MonoBehaviour
 {
     SpriteMask spriteMask;
-    public int LayerId;
+    public int LayerId, oldLayerID;
     GameManager gameManager;
 
     bool tempd = false, scaled = false;
-    public int FinalLayerId;
     BoxCollider2D Collider;
     [HideInInspector]
     public GameObject ChildReffrence;
     public float AddToSize = 0.0f;
     GameObject temp;
-    public Vector2 Size;
+    public MaskManager transitionFrom;
 
     float fix = 1.0f;
 
@@ -24,7 +23,6 @@ public class MaskManager : MonoBehaviour
     float smoothTime = 0.2f;
     float yVelocity = 15f, sVelocity = 5.0f;
     float scaler = 1.0f;
-    float max_scale;
 
     float scale;
     enum Direction { LEFT, RIGHT, UP, DOWN }
@@ -44,12 +42,13 @@ public class MaskManager : MonoBehaviour
         }
         Collider = new BoxCollider2D();
         Collider = this.gameObject.AddComponent<BoxCollider2D>();
+        
         spriteMask = GetComponent<SpriteMask>();
         LayerId = spriteMask.frontSortingLayerID;
+        oldLayerID = LayerId;
+
         gameManager = FindObjectOfType<GameManager>();
-        max_scale = gameManager.animationScale;
     }
-    // Update is called once per frame
 
 
     struct Layer_Selection
@@ -108,14 +107,21 @@ public class MaskManager : MonoBehaviour
     void Update()
     {
 
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            foreach(MaskManager mm in gameManager.MasksPieces)
+            {
+                mm.transition(SortingLayer.NameToID("Blue"));
+            }
+        }
+        
+
         if (tempd)
         {
             if (go == null)
             {
 
                 var l = SelectLayer(LayerId);
-
-
                 go = new GameObject();
                 go.transform.localScale = new Vector3(0.6f, 0.6f, 1);
                 go.transform.position = new Vector3(-1, 1, 0);
@@ -130,89 +136,49 @@ public class MaskManager : MonoBehaviour
                 temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(l.back_layer);
             }
 
-            if (max_scale <= 1.005f) { scaler = 1.0f; scaled = true; }
+            if (gameManager.animationScale <= 1.005f) { scaler = 1.0f; scaled = true; }
+
+            if (!scaled)
+            {
+                    scaler = Mathf.SmoothDamp(scaler, gameManager.animationScale, ref sVelocity, smoothTime);
+                    if (scaler > (gameManager.animationScale - 0.03f)) scaled = true;
+            }
+            else
+            {
+                scaler = Mathf.SmoothDamp(scaler, 1.0f, ref sVelocity, smoothTime);
+            }
+            scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
 
 
             if (direction == Direction.LEFT)
             {
-                if (!scaled)
-                {
-                    scaler = Mathf.SmoothDamp(scaler, max_scale, ref sVelocity, smoothTime);
-                    if (scaler > (max_scale - 0.03f)) scaled = true;
-                }
-                else
-                {
-                    scaler = Mathf.SmoothDamp(scaler, 1.0f, ref sVelocity, smoothTime);
-                }
-                scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
                 temp.transform.localScale = new Vector3(scale, 1.0f, 1.0f);
                 temp.transform.localPosition = new Vector3((scale - 1) * fix, 0, 0);
-                temp.transform.localScale *= scaler;
 
             }
             else if (direction == Direction.RIGHT)
             {
-
-                if (!scaled)
-                {
-                    scaler = Mathf.SmoothDamp(scaler, max_scale, ref sVelocity, smoothTime);
-                    if (scaler > (max_scale - 0.03f)) scaled = true;
-                }
-                else
-                {
-                    scaler = Mathf.SmoothDamp(scaler, 1.0f, ref sVelocity, smoothTime);
-                }
-
-                scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
                 temp.transform.localScale = new Vector3(scale, 1.0f, 1.0f);
                 temp.transform.localPosition = new Vector3((1 - scale) * fix, 0, 0);
-                temp.transform.localScale *= scaler;
             }
             else if (direction == Direction.UP)
             {
-                if (!scaled)
-                {
-                    scaler = Mathf.SmoothDamp(scaler, max_scale, ref sVelocity, smoothTime);
-                    if (scaler > (max_scale - 0.03f)) scaled = true;
-                }
-                else
-                {
-                    scaler = Mathf.SmoothDamp(scaler, 1.0f, ref sVelocity, smoothTime);
-                }
-
-                scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
                 temp.transform.localScale = new Vector3(1.0f, scale, 1.0f);
                 temp.transform.localPosition = new Vector3(0, -scale + 1, 0);
-                temp.transform.localScale *= scaler;
 
             }
             else if (direction == Direction.DOWN)
             {
-                if (!scaled)
-                {
-                    scaler = Mathf.SmoothDamp(scaler, max_scale, ref sVelocity, smoothTime);
-                    if (scaler > (max_scale - 0.03f)) scaled = true;
-                }
-                else
-                {
-                    scaler = Mathf.SmoothDamp(scaler, 1.0f, ref sVelocity, smoothTime);
-                }
-
-                scale = Mathf.SmoothDamp(scale, 1.0f, ref yVelocity, smoothTime);
                 temp.transform.localScale = new Vector3(1.0f, scale, 1.0f);
                 temp.transform.localPosition = new Vector3(0, scale - 1, 0);
-                temp.transform.localScale *= scaler;
             }
-            /*else if (direction == Direction.DOWN)
-            {
-                scale = Mathf.SmoothDamp(temp.transform.localScale.y, transform.localScale.y, ref yVelocity, smoothTime);
-                temp.transform.localScale = new Vector3(transform.localScale.x,scale, transform.localScale.z);
-                temp.transform.position = (transform.position) + new Vector3(0,-(transform.localScale.y - scale), 0);
-            }*/
+            
+            
+            temp.transform.localScale *= scaler;
             if (scaler <= 1.0005f && scaled) { scaler = 1.0f; scaled = true; }
 
             if ((new Vector3(1f, 1f, 1f) - temp.transform.localScale).magnitude <= 0.01 && scaler <= 1.01f && scaled)
-            { spriteMask.frontSortingLayerID = LayerId; Destroy(temp); tempd = false; if (go != null) Destroy(go); if (go2 != null) Destroy(go2); scaled = false; scaler = 1.0f; scale = 0.0f; }
+            { yVelocity = 15f; sVelocity = 5.0f; spriteMask.frontSortingLayerID = LayerId; Destroy(temp); tempd = false; if (go != null) Destroy(go); if (go2 != null) Destroy(go2); scaled = false; scaler = 1.0f; scale = 0.0f; }
 
 
         }
@@ -224,11 +190,19 @@ public class MaskManager : MonoBehaviour
         gameManager.LayerId = LayerId;
         gameManager.LayerName = SortingLayer.IDToName(LayerId);
         gameManager.PieceSelected = true;
+        gameManager.before = this;
+        
     }
-    private void OnMouseEnter()
+
+
+
+
+    public void transition(int layer)
     {
-        //gameManager.PieceSelected = true;
-        if (gameManager.LayerId != 0 && gameManager.PieceSelected != false && gameManager.LayerId != LayerId)
+        
+        if(spriteMask.frontSortingLayerID == layer) return;
+
+        if (layer != 0)
         {
             if (!tempd)
             {
@@ -243,38 +217,22 @@ public class MaskManager : MonoBehaviour
                 if (s.sprite.name == "32x128") fix = 2.0f; else fix = 1.0f;
                 s.alphaCutoff = 0.2f;
                 tempd = true;
-                
-                Vector3 diff = ((cam.ScreenToWorldPoint(Input.mousePosition) - transform.position));
-                diff.x += transform.localScale.x;
-                diff.y -= transform.localScale.y;
-                diff.y *= -1;
-                float[] diffs = new float[4];
-                diffs[0] = diff.x; //LEFT
-                diffs[1] = transform.localScale.x * 2 - diff.x; //RIGHT
-                diffs[2] = diff.y; //UP
-                diffs[3] = transform.localScale.y * 2 - diff.y; //DOWN
-                float smallest = diffs[0];
-                int smallest_i = 0;
-                for (int i = 1; i < 4; i++)
-                {
-                    if (diffs[i] < smallest)
-                    { smallest = diffs[i]; smallest_i = i; }
-                }
-                direction = (Direction)smallest_i;
+
 
                 temp.transform.localScale = Vector3.zero;
-                LayerId = gameManager.LayerId;
             }
 
             if (tempd)
             {
-                LayerId = gameManager.LayerId;
+                oldLayerID = LayerId;
+                LayerId = layer;
                 var l = SelectLayer(LayerId);
                 temp.GetComponent<SpriteMask>().frontSortingLayerID = SortingLayer.NameToID(l.go_layer);
                 temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(l.back_layer);
 
                 if (go != null)
                 {
+                    Debug.Log("changed go");
                     var s1 = go.GetComponent<SpriteRenderer>();
                     s1.sprite = l.newsprite;
                     s1.sortingLayerID = SortingLayer.NameToID(l.go_layer);
@@ -288,23 +246,93 @@ public class MaskManager : MonoBehaviour
             }
 
         }
+    }
 
+    public void revertDirection()
+    { switch(direction)
+    {
+        case Direction.LEFT:
+        direction = Direction.RIGHT;
+        break;
+
+        case Direction.RIGHT:
+        direction = Direction.LEFT;
+        break;
+
+        case Direction.UP:
+        direction = Direction.DOWN;
+        break;
+
+        case Direction.DOWN:
+        direction = Direction.UP;
+        break;
+    }
+    }
+
+    private void OnMouseEnter()
+    {
+        if(transitionFrom!=null)Debug.Log(transitionFrom.name);
+        transitionFrom = gameManager.before;
+        if (transitionFrom != null && gameManager.LayerId != 0 && transitionFrom.transitionFrom == this) 
+        {
+            transitionFrom.revertDirection();
+            transitionFrom.transition(transitionFrom.oldLayerID);
+        }
+        direction = relativeMousePosition();
+        if (gameManager.LayerId != 0 && gameManager.PieceSelected  && gameManager.LayerId != LayerId)
+            transition(gameManager.LayerId);
+
+    }
+
+
+    Direction relativeMousePosition()
+    {
+         Vector3 diff = ((cam.ScreenToWorldPoint(Input.mousePosition) - transform.position));
+        diff.x += transform.localScale.x;
+        diff.y -= transform.localScale.y;
+        diff.y *= -1;
+        float[] diffs = new float[4];
+        diffs[0] = diff.x; //LEFT
+        diffs[1] = transform.localScale.x * 2 - diff.x; //RIGHT
+        diffs[2] = diff.y; //UP
+        diffs[3] = transform.localScale.y * 2 - diff.y; //DOWN
+        float smallest = diffs[0];
+        int smallest_i = 0;
+        for (int i = 1; i < 4; i++)
+        {
+            if (diffs[i] < smallest)
+            { smallest = diffs[i]; smallest_i = i; }
+        }
+        return (Direction) smallest_i;
     }
     private void OnMouseUp()
     {
         gameManager.LayerId = 0;
+        gameManager.before = null;
         gameManager.CheckWin();
+        foreach (MaskManager mm in FindObjectsOfType<MaskManager>())
+        {mm.transitionFrom = null; mm.oldLayerID = mm.LayerId;}
+
     }
+
+    int q = 0;
     private void OnMouseExit()
     {
-        //gameManager.PieceSelected = false;
+        gameManager.before = this;
+        Debug.Log("Q" + q++ + gameObject.name);
+
     }
+
+
+
+
+
     public bool IsPatternRight()
     {
         if (this.LayerId == ChildReffrence.GetComponent<SpriteMask>().frontSortingLayerID)
         {
             return true;
         }
-            return false;
+        return false;
     }
 }

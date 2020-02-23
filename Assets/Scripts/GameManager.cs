@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     public MaskManager[] MasksPieces;
     public bool PieceSelected;
 
+
+    [HideInInspector]
+    public MaskManager before;
+
     public float animationScale;
 
     GameObject c;
@@ -63,15 +67,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator blur()
-    {
-        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().enabled = true;
-        yield return new WaitForSeconds(0.05f);
-        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().iterations = 2;
-        yield return new WaitForSeconds(0.05f);
-        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().iterations = 3;
-    }
-
+   
 
     
 
@@ -79,13 +75,11 @@ public class GameManager : MonoBehaviour
     {
         if (AllPatternsRight())
         {
-            StartCoroutine(blur());
             LevelCanvesManager lm = FindObjectOfType<LevelCanvesManager>();
             lm.Won();
         }
         if(lostColor() != "")
         {
-            StartCoroutine(blur());
             LevelCanvesManager lm = FindObjectOfType<LevelCanvesManager>();
             lm.Lost(lostColor());
 

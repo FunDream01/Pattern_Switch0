@@ -18,8 +18,9 @@ public class LevelCanvesManager : MonoBehaviour
 
     public GameObject clearScreenUIElementWinning, clearScreenUIElementLosing;
     public GameObject textElement, levelCompleteAsset;
-
     FacebookController facebook;
+
+    public TextMeshProUGUI levelText;
 
     public void NextButton()
     {
@@ -59,6 +60,7 @@ public class LevelCanvesManager : MonoBehaviour
             facebook = FindObjectOfType<FacebookController>();
         }
         facebook.LogLevelStart(SceneManager.GetActiveScene().buildIndex);
+        
 
     }
 
@@ -84,21 +86,43 @@ public class LevelCanvesManager : MonoBehaviour
         facebook.LogLevelFailure(SceneManager.GetActiveScene().buildIndex);
 
     }
+ IEnumerator blur()
+    {
+        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().enabled = true;
+        yield return new WaitForSeconds(0.05f);
+        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().iterations = 2;
+        yield return new WaitForSeconds(0.05f);
+        Camera.main.GetComponent<SuperBlur.SuperBlurFast>().iterations = 3;
+    }
 
 
 
     void Update()
     {
+        if(levelText.text != "Level " + SceneManager.GetActiveScene().buildIndex)
+        levelText.text = "Level " + SceneManager.GetActiveScene().buildIndex;
+
         string button_string = "";
         if (won)
         {
             button_string = "Next";
+            Camera.main.GetComponent<Animator>().enabled = true;
         }
         if (lost)
         {
             button_string = "Replay";
         }
-        if (won || lost) for (int i = 0; i < transform.childCount; i++)
+        if (won || lost) 
+        {StartCoroutine(waitAnim(button_string)); won=false; lost=false;}
+       
+    }
+
+    IEnumerator waitAnim(string button_string)
+    {
+        if(Camera.main.GetComponent<Animator>().enabled)
+        while (Camera.main.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1){ yield return new WaitForEndOfFrame();
+}
+         for (int i = 0; i < transform.childCount; i++)
             {
                 transform.GetChild(i).TryGetComponent<Animator>(out Animator t);
                 if (t != null)
@@ -108,5 +132,8 @@ public class LevelCanvesManager : MonoBehaviour
                     transform.GetChild(i).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = button_string;
                 }
             }
+
+            StartCoroutine(blur());
+
     }
 }
