@@ -31,13 +31,13 @@ public class MaskManager : MonoBehaviour
     Direction direction;
 
     GameObject go, go2;
-    Camera camera;
+    Camera cam;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        camera = Camera.main;
+        cam = Camera.main;
         if (ChildReffrence == null)
         {
             ChildReffrence = gameObject.transform.GetChild(0).gameObject;
@@ -244,7 +244,7 @@ public class MaskManager : MonoBehaviour
                 s.alphaCutoff = 0.2f;
                 tempd = true;
                 
-                Vector3 diff = ((camera.ScreenToWorldPoint(Input.mousePosition) - transform.position));
+                Vector3 diff = ((cam.ScreenToWorldPoint(Input.mousePosition) - transform.position));
                 diff.x += transform.localScale.x;
                 diff.y -= transform.localScale.y;
                 diff.y *= -1;

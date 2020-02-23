@@ -14,14 +14,14 @@ public class ArrowScript : MonoBehaviour
 
     GameManager gameManager;
     
-     Camera camera;
+     Camera cam;
 
     float origyscale;
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
 
-        camera=Camera.main;
+        cam=Camera.main;
     }
 
     // Update is called once per frame
@@ -31,7 +31,7 @@ public class ArrowScript : MonoBehaviour
         bool inside = false;
         if (Input.GetMouseButton(0))
         {
-            EndPos= camera.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
+            EndPos= cam.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
             
             foreach(Bounds b in gameManager.g_pieces)
             {
@@ -47,7 +47,7 @@ public class ArrowScript : MonoBehaviour
 
             if (gameManager.PieceSelected && inside)
             {
-                StartPos = camera.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
+                StartPos = cam.ScreenToWorldPoint(Input.mousePosition) + CameraOffset;
                 g = Instantiate(ArrowBase,StartPos,Quaternion.identity);
                 origyscale = g.transform.localScale.y;
                 a = Instantiate(ArrowHead,StartPos,Quaternion.identity);
