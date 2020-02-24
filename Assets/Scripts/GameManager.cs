@@ -8,12 +8,17 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int LayerId;
     public string LayerName;
+    [HideInInspector]
     public MaskManager[] MasksPieces;
+
+
+    
+
+    [HideInInspector]
+    public LinkedList<MaskManager> road;
     public bool PieceSelected;
 
 
-    [HideInInspector]
-    public MaskManager before;
 
     public float animationScale;
 
@@ -33,6 +38,7 @@ public class GameManager : MonoBehaviour
    
     void Start()
     {
+        road = new LinkedList<MaskManager>();
         MasksPieces = FindObjectsOfType<MaskManager>();
         foreach (MaskManager MasksPiece in MasksPieces)
         {

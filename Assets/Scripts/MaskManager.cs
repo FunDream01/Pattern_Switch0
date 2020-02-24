@@ -14,7 +14,6 @@ public class MaskManager : MonoBehaviour
     public GameObject ChildReffrence;
     public float AddToSize = 0.0f;
     GameObject temp;
-    public MaskManager transitionFrom;
 
     float fix = 1.0f;
 
@@ -106,16 +105,6 @@ public class MaskManager : MonoBehaviour
 
     void Update()
     {
-
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            foreach(MaskManager mm in gameManager.MasksPieces)
-            {
-                mm.transition(SortingLayer.NameToID("Blue"));
-            }
-        }
-        
-
         if (tempd)
         {
             if (go == null)
@@ -190,46 +179,38 @@ public class MaskManager : MonoBehaviour
         gameManager.LayerId = LayerId;
         gameManager.LayerName = SortingLayer.IDToName(LayerId);
         gameManager.PieceSelected = true;
-        gameManager.before = this;
+        gameManager.road = new LinkedList<MaskManager>();
+        gameManager.road.AddFirst(new LinkedListNode<MaskManager>(this));
         
     }
 
 
-
+    
+    
 
     public void transition(int layer)
     {
         
-        if(spriteMask.frontSortingLayerID == layer) return;
+
+      //  if(spriteMask.frontSortingLayerID == layer) return;
+        if(layer == LayerId) return;
 
         if (layer != 0)
         {
-            if (!tempd)
-            {
-                temp = new GameObject("Animation Object");
-                temp.transform.parent = transform.parent;
-                temp.transform.position = Vector3.zero;
-                temp.transform.SetParent(transform, false);
-
-                var s = temp.AddComponent<SpriteMask>();
-                s.isCustomRangeActive = true;
-                s.sprite = spriteMask.sprite;
-                if (s.sprite.name == "32x128") fix = 2.0f; else fix = 1.0f;
-                s.alphaCutoff = 0.2f;
-                tempd = true;
-
-
-                temp.transform.localScale = Vector3.zero;
-            }
-
-            if (tempd)
-            {
-                oldLayerID = LayerId;
-                LayerId = layer;
-                var l = SelectLayer(LayerId);
-                temp.GetComponent<SpriteMask>().frontSortingLayerID = SortingLayer.NameToID(l.go_layer);
-                temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(l.back_layer);
-
+            
+                if(temp!=null)
+                 Destroy(temp);
+                tempd = false;
+                 if (go != null) 
+                 Destroy(go); 
+                 if (go2 != null) 
+                 Destroy(go2); 
+                 scaled = false; 
+                 scaler = 1.0f; 
+                 scale = 0.0f;
+               
+               
+                /*
                 if (go != null)
                 {
                     Debug.Log("changed go");
@@ -241,9 +222,34 @@ public class MaskManager : MonoBehaviour
                     s2.sprite = l.newsprite;
                     s2.sortingLayerID = SortingLayer.NameToID(l.go_layer);
                 }
+                */
+
+                yVelocity = 15f; 
+                sVelocity = 5.0f;
+
+                temp = new GameObject("Animation Object");
+                temp.transform.parent = transform.parent;
+                temp.transform.position = Vector3.zero;
+                temp.transform.SetParent(transform, false);
+
+                var s = temp.AddComponent<SpriteMask>();
+                s.isCustomRangeActive = true;
+                s.sprite = spriteMask.sprite;
+                Debug.Log(GetComponent<Collider2D>().bounds.size);
+                if (s.sprite.name == "32x128") fix = 2.0f; else fix = 1.0f;
+                s.alphaCutoff = 0.2f;
+                tempd = true;
+                temp.transform.localScale = Vector3.zero;
+            
+
+                oldLayerID = LayerId;
+                LayerId = layer;
+                var l = SelectLayer(LayerId);
+                temp.GetComponent<SpriteMask>().frontSortingLayerID = SortingLayer.NameToID(l.go_layer);
+                temp.GetComponent<SpriteMask>().backSortingLayerID = SortingLayer.NameToID(l.back_layer);
 
 
-            }
+           
 
         }
     }
@@ -271,16 +277,33 @@ public class MaskManager : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if(transitionFrom!=null)Debug.Log(transitionFrom.name);
-        transitionFrom = gameManager.before;
-        if (transitionFrom != null && gameManager.LayerId != 0 && transitionFrom.transitionFrom == this) 
+
+
+        LinkedListNode<MaskManager> transitionFrom = gameManager.road.Last;
+        bool isUndoAction = false;
+        if (gameManager.LayerId != 0 && transitionFrom != null && transitionFrom.Previous != null && transitionFrom.Previous.Value == this) 
         {
-            transitionFrom.revertDirection();
-            transitionFrom.transition(transitionFrom.oldLayerID);
+            transitionFrom.Value.revertDirection();
+            transitionFrom.Value.transition(transitionFrom.Value.oldLayerID);
+            gameManager.road.RemoveLast();
+            gameManager.road.RemoveLast();
+            isUndoAction = true;
+            
         }
-        direction = relativeMousePosition();
-        if (gameManager.LayerId != 0 && gameManager.PieceSelected  && gameManager.LayerId != LayerId)
+
+        else if (gameManager.LayerId != 0 && gameManager.PieceSelected)
+            
+        {
+            direction = relativeMousePosition();
             transition(gameManager.LayerId);
+        }
+
+        if(!isUndoAction && gameManager.road.Contains(this))
+        {
+            gameManager.road = new LinkedList<MaskManager>();
+        }
+
+        gameManager.road.AddLast(new LinkedListNode<MaskManager>(this));
 
     }
 
@@ -308,24 +331,17 @@ public class MaskManager : MonoBehaviour
     private void OnMouseUp()
     {
         gameManager.LayerId = 0;
-        gameManager.before = null;
+        gameManager.road = new LinkedList<MaskManager>();
         gameManager.CheckWin();
         foreach (MaskManager mm in FindObjectsOfType<MaskManager>())
-        {mm.transitionFrom = null; mm.oldLayerID = mm.LayerId;}
+        {mm.oldLayerID = mm.LayerId;}
 
     }
 
     int q = 0;
     private void OnMouseExit()
     {
-        gameManager.before = this;
-        Debug.Log("Q" + q++ + gameObject.name);
-
     }
-
-
-
-
 
     public bool IsPatternRight()
     {
