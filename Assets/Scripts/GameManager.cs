@@ -126,10 +126,9 @@ public class GameManager : MonoBehaviour
         int lvl = PlayerPrefs.GetInt("level", 999);
         if (lvl == 999)
         {
-            PlayerPrefs.SetInt("level", SceneManager.GetActiveScene().buildIndex);
+            PlayerPrefs.SetInt("level", SceneManager.GetActiveScene().buildIndex +1 );
             PlayerPrefs.Save();
         }
-        else if (lvl != SceneManager.GetActiveScene().buildIndex) SceneManager.LoadScene(lvl);
     }
 
 
