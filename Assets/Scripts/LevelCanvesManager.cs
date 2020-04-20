@@ -41,12 +41,16 @@ public class LevelCanvesManager : MonoBehaviour
     void Start()
     {
         int lvl = PlayerPrefs.GetInt("level", 999);
+        Debug.Log(lvl);
         if (lvl == 999)
         {
             PlayerPrefs.SetInt("level", SceneManager.GetActiveScene().buildIndex);
             PlayerPrefs.Save();
         }
-        else if (lvl != SceneManager.GetActiveScene().buildIndex) SceneManager.LoadScene(lvl);
+        else if (lvl != SceneManager.GetActiveScene().buildIndex && lvl< 21 ) SceneManager.LoadScene(lvl);
+        else if (lvl>21){
+            SceneManager.LoadScene(Random.Range(4,21));
+        }
         analyticsController = new AnalyticsController();
         levelCompleteAsset.GetComponent<AspectRatioFitter>().enabled = true;
         Destroy(levelCompleteAsset.GetComponent<AspectRatioFitter>());
