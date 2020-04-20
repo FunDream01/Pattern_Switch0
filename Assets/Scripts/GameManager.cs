@@ -128,6 +128,8 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("level", SceneManager.GetActiveScene().buildIndex +1 );
             PlayerPrefs.Save();
+        }else{
+            SceneManager.LoadScene(lvl);
         }
     }
 
