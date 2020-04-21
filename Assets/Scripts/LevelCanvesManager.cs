@@ -25,7 +25,7 @@ public class LevelCanvesManager : MonoBehaviour
     public void NextButton()
     {
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(Random.Range(4,21));
 
 
     }
@@ -41,23 +41,15 @@ public class LevelCanvesManager : MonoBehaviour
     void Start()
     {
         int lvl = PlayerPrefs.GetInt("level", 999);
+        
+        levelText.text = "level " + lvl;
         Debug.Log(lvl);
-        if (lvl == 999)
-        {
-            PlayerPrefs.SetInt("level", SceneManager.GetActiveScene().buildIndex);
-            PlayerPrefs.Save();
-        }
-        else if (lvl != SceneManager.GetActiveScene().buildIndex && lvl< 21 ) SceneManager.LoadScene(lvl);
-        else if (lvl>21){
-            SceneManager.LoadScene(Random.Range(4,21));
-        }
         analyticsController = new AnalyticsController();
         levelCompleteAsset.GetComponent<AspectRatioFitter>().enabled = true;
         Destroy(levelCompleteAsset.GetComponent<AspectRatioFitter>());
         levelCompleteAsset.transform.position += new Vector3(0, 1000, 0);
         analyticsController.LogLevelStarted(SceneManager.GetActiveScene().buildIndex);
         facebook = FindObjectOfType<FacebookController>();
-
         if (facebook == null)
         {
             Instantiate(facebookObj);
@@ -75,7 +67,8 @@ public class LevelCanvesManager : MonoBehaviour
         clearScreenUIElementWinning.SetActive(true);
         analyticsController.LogLevelSucceeded(SceneManager.GetActiveScene().buildIndex);
         facebook.LogLevelSuccess(SceneManager.GetActiveScene().buildIndex);
-        PlayerPrefs.SetInt("level", SceneManager.GetActiveScene().buildIndex + 1);
+        int lvl = PlayerPrefs.GetInt("level");
+        PlayerPrefs.SetInt("level", lvl+1);
         PlayerPrefs.Save();
 
     }
@@ -103,9 +96,10 @@ public class LevelCanvesManager : MonoBehaviour
 
     void Update()
     {
+        /*
         if(levelText.text != "Level " + SceneManager.GetActiveScene().buildIndex)
         levelText.text = "Level " + SceneManager.GetActiveScene().buildIndex;
-
+        */
         string button_string = "";
         if (won)
         {

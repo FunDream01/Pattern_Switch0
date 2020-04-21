@@ -129,7 +129,13 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("level", SceneManager.GetActiveScene().buildIndex +1 );
             PlayerPrefs.Save();
         }else{
-            SceneManager.LoadScene(lvl);
+            if (lvl >=21){
+
+                SceneManager.LoadScene(Random.Range(4,21));
+            }else{
+                
+                SceneManager.LoadScene(lvl);
+            }
         }
     }
 
